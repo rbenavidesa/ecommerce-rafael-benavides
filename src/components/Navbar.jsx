@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline';
+import React, { useMemo } from 'react';
+import { Disclosure } from '@headlessui/react';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import logo from '../images/butterfly-skin-logo.png';
 import CartWidget from '../components/CartWidget';
 
@@ -17,6 +17,36 @@ function classNames(...classes) {
 }
 
 export const Navbar = () => {
+  const navigationItems = useMemo(() => 
+    navigation.map((item) => (
+      <a
+        key={item.name}
+        href={item.href}
+        className={classNames(
+          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+          'px-3 py-2 rounded-md text-sm font-medium'
+        )}
+        aria-current={item.current ? 'page' : undefined}
+      >
+        {item.name}
+      </a>
+    )), []);
+
+  const mobileNavigationItems = useMemo(() => 
+    navigation.map((item) => (
+      <a
+        key={item.name}
+        href={item.href}
+        className={classNames(
+          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+          'block px-3 py-2 rounded-md text-base font-medium'
+        )}
+        aria-current={item.current ? 'page' : undefined}
+      >
+        {item.name}
+      </a>
+    )), []);
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -49,19 +79,7 @@ export const Navbar = () => {
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'px-3 py-2 rounded-md text-sm font-medium'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                    {navigationItems}
                   </div>
                 </div>
               </div>
@@ -76,19 +94,7 @@ export const Navbar = () => {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </a>
-              ))}
+              {mobileNavigationItems}
             </div>
           </Disclosure.Panel>
         </>
